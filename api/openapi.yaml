@@ -9,7 +9,46 @@ info:
 servers:
   - url: /api
 
+x-constnt:
+  maxLength:
+    shortString: &max_len_short_string 100
+    longString: &max_len_long_string 1000
+    url: &max_len_url 2000
+  default:
+    pageSize: &default_page_size 50
+  maximum:
+    pageSize: &max_page_size 100
+
 paths:
+  /artists:
+    get:
+      summary: 作家一覧
+      operationId: listArtist
+      tags:
+        - artists
+      parameters:
+        - in: query
+          name: pageToken
+          description: |
+            ページトークンを指定する
+
+            一覧を取得する際に、レスポンスの `nextPageToken` の値を設定してリクエストを送信することで
+            次のページの一覧を取得することができる
+          required: false
+          schema:
+            type: string
+        - in: query
+          name: pageSize
+          description: 一度のリクエストで取得するリストの数を指定する
+          schema:
+            type: integer
+            format: int32
+            default: *default_page_size
+            maximum: *max_page_size
+      responses:
+        "200":
+          $ref: "#/components/responses/ListArtist"
+
   /helloworld:
     get:
       summary: Hello, World
@@ -24,6 +63,26 @@ paths:
 
 components:
   responses:
+    ListArtist:
+      description: 作家一覧
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              artists:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Artist"
+              totalCount:
+                type: integer
+                description: 総作家数
+                format: int32
+                example: 100
+              nextPageToken:
+                type: string
+                description: 次ページ取得のためのトークン
+                example: xxxxxxxxxxxxx
     GetHelloWorld:
       description: Hello Worldメッセージ
       content:
