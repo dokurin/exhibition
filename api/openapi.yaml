@@ -38,6 +38,88 @@ components:
             $ref: "#/components/schemas/Error"
 
   schemas:
+    Artist:
+      type: object
+      properties:
+        id:
+          type: string
+          description: 作家ID
+        profile:
+          type: object
+          description: 作家情報
+          properties:
+            avator:
+              type: string
+              description: アバターのURL
+              maxLength: *max_len_url
+              format: url
+              example: "https://github.com/ryutah.png"
+            name:
+              type: string
+              description: 作家名
+              maxLength: *max_len_short_string
+              example: ryutah
+            introduction:
+              type: string
+              description: 作家紹介
+              maxLength: *max_len_long_string
+              example: |
+                僕はすごい作家なので、ぶっちゃけこんなサイト使わなくてもどうとでもなるのです😊
+                試しに使ってみようかなって程度なのです。
+          required:
+            - name
+            - introduction
+        masterpiece:
+          type: object
+          description: 代表作
+          properties:
+            title:
+              type: string
+              description: 作品タイトル
+              maxLength: *max_len_short_string
+              example: ほげほげふがふが
+            url:
+              type: string
+              description: |
+                作品の画像URL
+                解像度: 150x150(適当)
+              maxLength: *max_len_url
+              example: "https://placehold.jp/150x150.png"
+          required:
+            - title
+            - url
+        links:
+          type: array
+          items:
+            type: object
+            description: リンク情報
+            properties:
+              url:
+                type: string
+                description: URL
+                maxLength: *max_len_url
+                format: url
+                example: "https://github.com/ryutah"
+              displayName:
+                type: string
+                description: 表示名
+                maxLength: *max_len_short_string
+                example: "@ryutah"
+              icon:
+                type: string
+                description: サービスアイコンのURL
+                maxLength: *max_len_long_string
+                format: url
+                example: "https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png"
+            required:
+              - url
+              - displayName
+              - links
+      required:
+        - id
+        - profile
+        - masterpiece
+
     HelloWorld:
       type: object
       properties:
