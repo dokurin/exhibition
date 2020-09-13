@@ -68,18 +68,6 @@ paths:
         "500":
           $ref: "#/components/responses/ServerError"
 
-  /helloworld:
-    get:
-      summary: Hello, World
-      operationId: getHelloWorld
-      tags:
-        - helloworld
-      responses:
-        "200":
-          $ref: "#/components/responses/GetHelloWorld"
-        "500":
-          $ref: "#/components/responses/ServerError"
-
 components:
   responses:
     ListArtist:
@@ -209,15 +197,6 @@ components:
         - id
         - profile
         - masterpiece
-
-    HelloWorld:
-      type: object
-      properties:
-        message:
-          type: string
-          example: "Hello, Worldd!!"
-      required:
-        - message
 
     # エラーメッセージの参考:
     # https://developers.google.com/search-ads/v2/standard-error-responses
