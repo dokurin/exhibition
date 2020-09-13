@@ -9,27 +9,105 @@ info:
 servers:
   - url: /api
 
+x-constnt:
+  maxLength:
+    shortString: &max_len_short_string 100
+    longString: &max_len_long_string 1000
+    url: &max_len_url 2000
+  default:
+    pageSize: &default_page_size 50
+  maximum:
+    pageSize: &max_page_size 100
+
 paths:
-  /helloworld:
+  /artists:
     get:
-      summary: Hello, World
-      operationId: getHelloWorld
+      summary: 作家一覧
+      operationId: listArtist
       tags:
-        - helloworld
+        - artists
+      parameters:
+        - in: query
+          name: pageToken
+          description: |
+            ページトークンを指定する
+
+            一覧を取得する際に、レスポンスの `nextPageToken` の値を設定してリクエストを送信することで
+            次のページの一覧を取得することができる
+          required: false
+          schema:
+            type: string
+        - in: query
+          name: pageSize
+          description: 一度のリクエストで取得するリストの数を指定する
+          schema:
+            type: integer
+            format: int32
+            default: *default_page_size
+            maximum: *max_page_size
       responses:
         "200":
-          $ref: "#/components/responses/GetHelloWorld"
+          $ref: "#/components/responses/ListArtist"
+  /artists/{artistId}:
+    get:
+      summary: 作家詳細情報取得
+      operationId: getArtist
+      tags:
+        - artists
+      parameters:
+        - in: path
+          required: true
+          name: artistId
+          schema:
+            type: string
+      responses:
+        "200":
+          $ref: "#/components/responses/GetArtist"
+        "404":
+          $ref: "#/components/responses/NotFoundError"
         "500":
           $ref: "#/components/responses/ServerError"
 
 components:
   responses:
+    ListArtist:
+      description: 作家一覧
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              artists:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Artist"
+              totalCount:
+                type: integer
+                description: 総作家数
+                format: int32
+                example: 100
+              nextPageToken:
+                type: string
+                description: 次ページ取得のためのトークン
+                example: xxxxxxxxxxxxx
+    GetArtist:
+      description: artistIdで指定された作家の情報
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Artist"
     GetHelloWorld:
       description: Hello Worldメッセージ
       content:
         application/json:
           schema:
             $ref: "#/components/schemas/HelloWorld"
+    NotFoundError:
+      description: NotFoundエラー
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
     ServerError:
       description: サーバーエラー
       content:
@@ -38,14 +116,87 @@ components:
             $ref: "#/components/schemas/Error"
 
   schemas:
-    HelloWorld:
+    Artist:
       type: object
       properties:
-        message:
+        id:
           type: string
-          example: "Hello, Worldd!!"
+          description: 作家ID
+        profile:
+          type: object
+          description: 作家情報
+          properties:
+            avator:
+              type: string
+              description: アバターのURL
+              maxLength: *max_len_url
+              format: url
+              example: "https://github.com/ryutah.png"
+            name:
+              type: string
+              description: 作家名
+              maxLength: *max_len_short_string
+              example: ryutah
+            introduction:
+              type: string
+              description: 作家紹介
+              maxLength: *max_len_long_string
+              example: |
+                僕はすごい作家なので、ぶっちゃけこんなサイト使わなくてもどうとでもなるのです😊
+                試しに使ってみようかなって程度なのです。
+          required:
+            - name
+            - introduction
+        masterpiece:
+          type: object
+          description: 代表作
+          properties:
+            title:
+              type: string
+              description: 作品タイトル
+              maxLength: *max_len_short_string
+              example: ほげほげふがふが
+            url:
+              type: string
+              description: |
+                作品の画像URL
+                解像度: 150x150(適当)
+              maxLength: *max_len_url
+              example: "https://placehold.jp/150x150.png"
+          required:
+            - title
+            - url
+        links:
+          type: array
+          items:
+            type: object
+            description: リンク情報
+            properties:
+              url:
+                type: string
+                description: URL
+                maxLength: *max_len_url
+                format: url
+                example: "https://github.com/ryutah"
+              displayName:
+                type: string
+                description: 表示名
+                maxLength: *max_len_short_string
+                example: "@ryutah"
+              icon:
+                type: string
+                description: サービスアイコンのURL
+                maxLength: *max_len_long_string
+                format: url
+                example: "https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png"
+            required:
+              - url
+              - displayName
+              - links
       required:
-        - message
+        - id
+        - profile
+        - masterpiece
 
     # エラーメッセージの参考:
     # https://developers.google.com/search-ads/v2/standard-error-responses
@@ -59,8 +210,9 @@ components:
             画面上にエラーを表示することが想定されている
         code:
           type: integer
+          format: int32
           description: HTTPステータスコード
-          enum: [500]
+          enum: [500, 404]
         errors:
           type: array
           description: エラーリスト
