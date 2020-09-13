@@ -1,0 +1,89 @@
+openapi: 3.0.0
+info:
+  version: 0.1.0
+  title: オンライン展示会
+  description: オンライン展示会 サーバサイドAPI定義
+  # NOTE(ryutah): LICENSEどうする？
+  # license:
+  #   name: MIT
+servers:
+  - url: /api
+
+paths:
+  /helloworld:
+    get:
+      summary: Hello, World
+      operationId: getHelloWorld
+      tags:
+        - helloworld
+      responses:
+        "200":
+          $ref: "#/components/responses/GetHelloWorld"
+        "500":
+          $ref: "#/components/responses/ServerError"
+
+components:
+  responses:
+    GetHelloWorld:
+      description: Hello Worldメッセージ
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/HelloWorld"
+    ServerError:
+      description: サーバーエラー
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+
+  schemas:
+    HelloWorld:
+      type: object
+      properties:
+        message:
+          type: string
+          example: "Hello, Worldd!!"
+      required:
+        - message
+
+    # エラーメッセージの参考:
+    # https://developers.google.com/search-ads/v2/standard-error-responses
+    Error:
+      type: object
+      properties:
+        message:
+          type: string
+          description: >
+            エラーメッセージ概要
+            画面上にエラーを表示することが想定されている
+        code:
+          type: integer
+          description: HTTPステータスコード
+          enum: [500]
+        errors:
+          type: array
+          description: エラーリスト
+          items:
+            $ref: "#/components/schemas/ErrorDetail"
+      required:
+        - message
+        - code
+        - errors
+
+    ErrorDetail:
+      type: object
+      properties:
+        reason:
+          type: string
+          description: エラー種別
+          enum:
+            - inernalError
+        message:
+          description: >
+            エラーの詳細内容
+            画面上に表示される形式で有ることは保証されない
+          type: string
+      required:
+        - reason
+        - message
