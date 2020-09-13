@@ -200,6 +200,7 @@ components:
             画面上にエラーを表示することが想定されている
         code:
           type: integer
+          format: int32
           description: HTTPステータスコード
           enum: [500]
         errors:
