@@ -48,6 +48,25 @@ paths:
       responses:
         "200":
           $ref: "#/components/responses/ListArtist"
+  /artists/{artistId}:
+    get:
+      summary: 作家詳細情報取得
+      operationId: getArtist
+      tags:
+        - artists
+      parameters:
+        - in: path
+          required: true
+          name: artistId
+          schema:
+            type: string
+      responses:
+        "200":
+          $ref: "#/components/responses/GetArtist"
+        "404":
+          $ref: "#/components/responses/NotFoundError"
+        "500":
+          $ref: "#/components/responses/ServerError"
 
   /helloworld:
     get:
@@ -83,12 +102,24 @@ components:
                 type: string
                 description: 次ページ取得のためのトークン
                 example: xxxxxxxxxxxxx
+    GetArtist:
+      description: artistIdで指定された作家の情報
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Artist"
     GetHelloWorld:
       description: Hello Worldメッセージ
       content:
         application/json:
           schema:
             $ref: "#/components/schemas/HelloWorld"
+    NotFoundError:
+      description: NotFoundエラー
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
     ServerError:
       description: サーバーエラー
       content:
@@ -202,7 +233,7 @@ components:
           type: integer
           format: int32
           description: HTTPステータスコード
-          enum: [500]
+          enum: [500, 404]
         errors:
           type: array
           description: エラーリスト
