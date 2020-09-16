@@ -18,6 +18,17 @@ x-constnt:
     pageSize: &default_page_size 50
   maximum:
     pageSize: &max_page_size 100
+  response:
+    paging_fields: &response_paging_fields
+      totalCount:
+        type: integer
+        description: 総作家数
+        format: int32
+        example: 100
+      nextPageToken:
+        type: string
+        description: 次ページ取得のためのトークン
+        example: xxxxxxxxxxxxx
 
 paths:
   /artists:
@@ -68,6 +79,26 @@ paths:
         "500":
           $ref: "#/components/responses/ServerError"
 
+  /artists/{artistId}/artofworks:
+    get:
+      summary: 作品一覧取得
+      operationId: listArtOfWork
+      tags:
+        - art_of_works
+      parameters:
+        - in: path
+          required: true
+          name: artistId
+          schema:
+            type: string
+      responses:
+        "200":
+          $ref: "#/components/responses/ListArtOfWork"
+        "404":
+          $ref: "#/components/responses/NotFoundError"
+        "500":
+          $ref: "#/components/responses/ServerError"
+
 components:
   responses:
     ListArtist:
@@ -81,35 +112,43 @@ components:
                 type: array
                 items:
                   $ref: "#/components/schemas/Artist"
-              totalCount:
-                type: integer
-                description: 総作家数
-                format: int32
-                example: 100
-              nextPageToken:
-                type: string
-                description: 次ページ取得のためのトークン
-                example: xxxxxxxxxxxxx
+              <<: *response_paging_fields
     GetArtist:
       description: artistIdで指定された作家の情報
       content:
         application/json:
           schema:
             $ref: "#/components/schemas/Artist"
-    GetHelloWorld:
-      description: Hello Worldメッセージ
+    ListArtOfWork:
+      description: 作品一覧
       content:
         application/json:
           schema:
-            $ref: "#/components/schemas/HelloWorld"
+            type: object
+            properties:
+              artOfWorks:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ArtOfWork"
+              <<: *response_paging_fields
     NotFoundError:
-      description: NotFoundエラー
+      description: |
+        NotFoundエラー
+
+        パスで指定されているリソースが存在しない場合
+        検索結果が0件である場合等では404エラーは発生しない
+        (その場合は、空のリストが成功レスポンスで返される)
       content:
         application/json:
           schema:
             $ref: "#/components/schemas/Error"
     ServerError:
-      description: サーバーエラー
+      description: |
+        サーバーエラー
+
+        予期せぬエラーが発生した場合
+        エラー詳細には、内部的なエラーメッセージが含まれる可能性があるため、
+        画面上に表示するには適さない
       content:
         application/json:
           schema:
@@ -197,6 +236,52 @@ components:
         - id
         - profile
         - masterpiece
+
+    ArtOfWork:
+      type: object
+      description: 作品
+      properties:
+        id:
+          type: string
+          description: 作品ID
+          example: "xxxxxxxxxxxx"
+        information:
+          type: object
+          description: 作品詳細情報
+          properties:
+            title:
+              type: string
+              description: 作品タイトル
+              maxLength: *max_len_short_string
+              example: 現場猫
+            introduction:
+              type: string
+              description: 作品の紹介文
+              maxLength: *max_len_long_string
+              example: |
+                現場猫とは、様々な現場ではたらく猫たちである。便宜上、そのもとになった「電話猫」、そして現場猫をもとにして作られた「仕事猫」についてもここで述べる。
+                現場猫の元となった画像は、くまみね氏が2016年2015年(2020/08/13訂正)にツイートした「ネコ電話相談室」が初出。猫が受話器を取り、「どうして夜中に起きてるんですか？」と言っている画像である。
+          required:
+            - title
+            - introduction
+        displayItem:
+          type: object
+          description: 展示物
+          properties:
+            url:
+              type: string
+              description: 展示物のURL
+              format: url
+              example: "https://user-images.githubusercontent.com/6662577/93331845-e2435f80-f85b-11ea-9a1e-3c3d591e4504.png"
+              maxLength: *max_len_url
+            mediaType:
+              type: string
+              description: 展示物のメディアタイプ
+              enum:
+                - image/png
+                - video/mp4
+      required:
+        - information
 
     # エラーメッセージの参考:
     # https://developers.google.com/search-ads/v2/standard-error-responses
