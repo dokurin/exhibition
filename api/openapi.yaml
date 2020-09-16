@@ -11,21 +11,21 @@ servers:
 
 x-constnt:
   maxLength:
-    shortString: &max_len_short_string 100
-    longString: &max_len_long_string 1000
+    short_string: &max_len_short_string 100
+    long_string: &max_len_long_string 1000
     url: &max_len_url 2000
   default:
-    pageSize: &default_page_size 50
+    page_size: &default_page_size 50
   maximum:
-    pageSize: &max_page_size 100
+    page_size: &max_page_size 100
   response:
     paging_fields: &response_paging_fields
-      totalCount:
+      total_count:
         type: integer
         description: 総作家数
         format: int32
         example: 100
-      nextPageToken:
+      next_page_token:
         type: string
         description: 次ページ取得のためのトークン
         example: xxxxxxxxxxxxx
@@ -39,17 +39,17 @@ paths:
         - artists
       parameters:
         - in: query
-          name: pageToken
+          name: page_token
           description: |
             ページトークンを指定する
 
-            一覧を取得する際に、レスポンスの `nextPageToken` の値を設定してリクエストを送信することで
+            一覧を取得する際に、レスポンスの `next_page_token` の値を設定してリクエストを送信することで
             次のページの一覧を取得することができる
           required: false
           schema:
             type: string
         - in: query
-          name: pageSize
+          name: page_size
           description: 一度のリクエストで取得するリストの数を指定する
           schema:
             type: integer
@@ -59,7 +59,7 @@ paths:
       responses:
         "200":
           $ref: "#/components/responses/ListArtist"
-  /artists/{artistId}:
+  /artists/{artist_id}:
     get:
       summary: 作家詳細情報取得
       operationId: getArtist
@@ -68,7 +68,7 @@ paths:
       parameters:
         - in: path
           required: true
-          name: artistId
+          name: artist_id
           schema:
             type: string
       responses:
@@ -79,7 +79,7 @@ paths:
         "500":
           $ref: "#/components/responses/ServerError"
 
-  /artists/{artistId}/artofworks:
+  /artists/{artist_id}/artofworks:
     get:
       summary: 作品一覧取得
       operationId: listArtOfWork
@@ -88,7 +88,7 @@ paths:
       parameters:
         - in: path
           required: true
-          name: artistId
+          name: artist_id
           schema:
             type: string
       responses:
@@ -114,7 +114,7 @@ components:
                   $ref: "#/components/schemas/Artist"
               <<: *response_paging_fields
     GetArtist:
-      description: artistIdで指定された作家の情報
+      description: artist_idで指定された作家の情報
       content:
         application/json:
           schema:
@@ -126,7 +126,7 @@ components:
           schema:
             type: object
             properties:
-              artOfWorks:
+              art_of_works:
                 type: array
                 items:
                   $ref: "#/components/schemas/ArtOfWork"
@@ -217,7 +217,7 @@ components:
                 maxLength: *max_len_url
                 format: url
                 example: "https://github.com/ryutah"
-              displayName:
+              display_name:
                 type: string
                 description: 表示名
                 maxLength: *max_len_short_string
@@ -230,7 +230,7 @@ components:
                 example: "https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png"
             required:
               - url
-              - displayName
+              - display_name
               - links
       required:
         - id
@@ -264,24 +264,25 @@ components:
           required:
             - title
             - introduction
-        displayItem:
+        display_items:
           type: object
-          description: 展示物
+          description: 作品
           properties:
             url:
               type: string
-              description: 展示物のURL
+              description: 作品のURL
               format: url
               example: "https://user-images.githubusercontent.com/6662577/93331845-e2435f80-f85b-11ea-9a1e-3c3d591e4504.png"
               maxLength: *max_len_url
-            mediaType:
+            mime_type:
               type: string
-              description: 展示物のメディアタイプ
+              description: 作品の形式
               enum:
                 - image/png
                 - video/mp4
       required:
         - information
+        - display_items
 
     # エラーメッセージの参考:
     # https://developers.google.com/search-ads/v2/standard-error-responses
@@ -297,7 +298,7 @@ components:
           type: integer
           format: int32
           description: HTTPステータスコード
-          enum: [500, 404]
+          enum: [404, 500]
         errors:
           type: array
           description: エラーリスト
@@ -315,7 +316,8 @@ components:
           type: string
           description: エラー種別
           enum:
-            - inernalError
+            - inernal_error
+            - not_found
         message:
           description: >
             エラーの詳細内容
