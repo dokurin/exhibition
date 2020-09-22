@@ -9,3 +9,10 @@
 ## コーディングスタイル
 
 [Editor Config設定](.editorconfig) を参照
+
+## 推奨プラグイン
+
+- VS Code
+  - [EditorConfig for VS Code](https://marketplace.visualstudio.com/items?itemName=EditorConfig.EditorConfig)
+- Vim
+  - [editorconfig/editorconfig-vim](https://github.com/editorconfig/editorconfig-vim)
