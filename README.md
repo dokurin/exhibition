@@ -5,3 +5,7 @@
 ## ドキュメント
 
 - [API定義](https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/dokurin/exhibition/master/api/openapi.yaml)
+
+## コーディングスタイル
+
+[Editor Config設定](.editorconfig) を参照
