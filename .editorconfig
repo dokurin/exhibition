@@ -1,0 +1,25 @@
+root = true
+
+[*]
+## 改行コードLFに
+end_of_line = lf
+## CharsetはUTF8で統一
+charset = utf-8
+## 末尾空白のトリム
+trim_trailing_whitespace = true
+## 最終行に開業を追加するか
+insert_final_newline = true
+## インデントをスペースにする
+indent_style = space
+## インデントサイズはスペース2つに
+indent_size = 2
+## タブの表示をスペース4つ分に
+tab_width = 4
+
+[**.go]
+## インデントをタブにする
+indent_style = tab
+
+[*.md]
+## 末尾の空白をトリムしない
+trim_trailing_whitespace = false
