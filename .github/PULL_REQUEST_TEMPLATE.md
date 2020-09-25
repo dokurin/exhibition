@@ -1,12 +1,3 @@
----
-name: デフォルトPull Requestテンプレート
-about: PR作成のデフォルトテンプレート
-title: ''
-labels: ''
-assignees: ''
-
----
-
 <!--
 
 わからないことがあればWikiの開発ルールを確認しましょう！
