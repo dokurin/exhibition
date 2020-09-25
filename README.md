@@ -15,5 +15,8 @@
 
 - VS Code
   - [EditorConfig for VS Code](https://marketplace.visualstudio.com/items?itemName=EditorConfig.EditorConfig)
+  - [markdownlint](https://marketplace.visualstudio.com/items?itemName=DavidAnson.vscode-markdownlint)
 - Vim
   - [editorconfig/editorconfig-vim](https://github.com/editorconfig/editorconfig-vim)
+  - [dense-analysis/ale](https://github.com/dense-analysis/ale)
+    - [markdownlint-cli](https://github.com/igorshubovych/markdownlint-cli)
