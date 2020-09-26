@@ -1,0 +1,30 @@
+@startuml パートナー登録
+start
+:申請受領（申し込みフォーム）;
+:審査（思想活動、反社等）;
+if(condition) then (True)
+    :パートナーデータベースへ登録;
+
+    else(False)
+    :ブラックリストへの登録;
+endif
+
+:審査結果の通知;
+stop
+@enduml
+
+
+@startuml パトロン登録
+start
+:申請受領（申し込みフォーム）;
+:審査（思想活動、反社等）;
+if(condition) then (True)
+    :パートナーデータベースへ登録;
+    else(False)
+    :ブラックリストへの登録;
+endif
+
+:審査結果の通知;
+
+stop
+@enduml

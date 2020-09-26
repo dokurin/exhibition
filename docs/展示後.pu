@@ -1,0 +1,7 @@
+@startuml 展示後
+start
+:作品の梱包および発送用ラベルの貼り付け;
+:郵送手配;
+
+stop
+@enduml
