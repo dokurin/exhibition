@@ -1,0 +1,21 @@
+version: 2.1
+
+orbs:
+  node: circleci/node@4.0.1
+
+jobs:
+  lint-markdown:
+    executor: node/default
+    steps:
+      - checkout
+      - node/install-packages:
+          cache-path: "~/projects/node_modules"
+          cache-version: "v1"
+      - run:
+          command: "npm run lint:markdown"
+
+workflows:
+  version: 2
+  build:
+    jobs:
+      - lint-markdown
