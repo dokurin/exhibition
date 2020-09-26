@@ -1,0 +1,36 @@
+version: 2.1
+
+reference:
+  cache-version:
+    linter-npm: &cache-version-linter-npm "v1"
+
+orbs:
+  node: circleci/node@4.0.1
+
+jobs:
+  lint-markdown:
+    executor: node/default
+    steps:
+      - checkout
+      - node/install-packages:
+          cache-path: "~/projects/node_modules"
+          cache-version: *cache-version-linter-npm
+      - run:
+          command: "npm run lint:markdown"
+
+  lint-editorconfig:
+    executor: node/default
+    steps:
+      - checkout
+      - node/install-packages:
+          cache-path: "~/projects/node_modules"
+          cache-version: *cache-version-linter-npm
+      - run:
+          command: "npm run lint:editorconfig"
+
+workflows:
+  version: 2
+  build:
+    jobs:
+      - lint-markdown
+      - lint-editorconfig

@@ -1,5 +1,7 @@
 # オンライン展覧会
 
+[![CircleCI](https://circleci.com/gh/dokurin/exhibition.svg?style=shield)](https://circleci.com/gh/dokurin/exhibition)
+
 今、一番モチベーションの湧く題材をテーマにする。
 
 ## ドキュメント
