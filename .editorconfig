@@ -23,3 +23,7 @@ indent_style = tab
 [*.md]
 ## 末尾の空白をトリムしない
 trim_trailing_whitespace = false
+
+[.gitignore]
+trim_trailing_whitespace = none
+end_of_line = none
