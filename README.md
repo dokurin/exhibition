@@ -7,7 +7,7 @@
 ## ドキュメント
 
 - [開発ルール](docs/develop_rule.md)
-- [API定義](https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/dokurin/exhibition/master/api/openapi.yaml)
+- [API定義](api/openapi.yaml)
 
 ## コーディングスタイル
 
