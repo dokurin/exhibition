@@ -4,6 +4,7 @@
 first-line-h1: false
 no-hard-tabs: false
 no-duplicate-heading: false
+no-inline-html: false
 line-length:
   line_length: 150
   tables: false
