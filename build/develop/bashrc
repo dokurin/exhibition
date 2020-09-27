@@ -122,3 +122,6 @@ __prev_result_prompt() {
 }
 
 export PS1='[$(__prev_result_prompt)\u@\[\e[0;35m\]\h\[\e[0m\]] ($(__git_prompt)) \w\n$ '
+
+# Go Binary and Go global tools
+export PATH=${PATH}:/usr/local/go/bin:/root/go/bin
