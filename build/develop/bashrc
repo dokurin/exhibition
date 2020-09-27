@@ -118,7 +118,7 @@ __git_prompt() {
 __prev_result_prompt() {
   if [[ $? != 0 ]]; then
     echo -e "\e[31m\xE2\x9C\x98\e[0m "
-  fi 
+  fi
 }
 
 export PS1='[$(__prev_result_prompt)\u@\[\e[0;35m\]\h\[\e[0m\]] ($(__git_prompt)) \w\n$ '
