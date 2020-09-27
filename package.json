@@ -2,7 +2,7 @@
   "name": "exhibition",
   "scripts": {
     "lint:markdown": "markdownlint **/*.md",
-    "lint:editorconfig": "eclint check $(git ls-files)"
+    "lint:editorconfig": "eclint check '**/*'"
   },
   "devDependencies": {
     "eclint": "^2.8.1",
