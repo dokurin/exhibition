@@ -56,7 +56,8 @@ RUN wget -q https://golang.org/dl/go${GO_VERSION}.linux-amd64.tar.gz \
 # Install Nodejs
 WORKDIR /tmp/nodejs
 RUN curl -L https://raw.githubusercontent.com/tj/n/master/bin/n -o n \
- && bash n ${NODE_VERSION}
+ && bash n ${NODE_VERSION} \
+ && rm -rf /tmp/nodejs
 
 # Install repository tools
 COPY package.json /usr/local/
