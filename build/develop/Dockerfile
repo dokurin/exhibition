@@ -58,8 +58,13 @@ WORKDIR /tmp/nodejs
 RUN curl -L https://raw.githubusercontent.com/tj/n/master/bin/n -o n \
  && bash n ${NODE_VERSION}
 
+# Install repository tools
+COPY package.json /usr/local/
+COPY package-lock.json /usr/local/
+RUN /usr/local/bin/npm ci -g
+
 # Setup prompt
 ADD https://raw.githubusercontent.com/git/git/master/contrib/completion/git-prompt.sh /root/.git-prompt.sh
-COPY bashrc /root/.bashrc
+COPY ./build/develop/bashrc /root/.bashrc
 
 WORKDIR /root
