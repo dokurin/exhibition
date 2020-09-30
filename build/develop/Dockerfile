@@ -51,16 +51,21 @@ RUN apt-get update \
 # Install Golang
 RUN wget -q https://golang.org/dl/go${GO_VERSION}.linux-amd64.tar.gz \
  && tar -C /usr/local -xzf go${GO_VERSION}.linux-amd64.tar.gz \
- && echo 'export PATH=${PATH}:/usr/local/go/bin:/root/go/bin' >> .bashrc \
  && rm -f go${GO_VERSION}.linux-amd64.tar.gz
 
 # Install Nodejs
 WORKDIR /tmp/nodejs
 RUN curl -L https://raw.githubusercontent.com/tj/n/master/bin/n -o n \
- && bash n ${NODE_VERSION}
+ && bash n ${NODE_VERSION} \
+ && rm -rf /tmp/nodejs
+
+# Install repository tools
+COPY package.json /usr/local/
+COPY package-lock.json /usr/local/
+RUN /usr/local/bin/npm ci -g
 
 # Setup prompt
 ADD https://raw.githubusercontent.com/git/git/master/contrib/completion/git-prompt.sh /root/.git-prompt.sh
-COPY bashrc /root/.bashrc
+COPY ./build/develop/bashrc /root/.bashrc
 
 WORKDIR /root
