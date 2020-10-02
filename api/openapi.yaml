@@ -162,80 +162,89 @@ components:
           type: string
           description: 作家ID
         profile:
-          type: object
-          description: 作家情報
-          properties:
-            avator:
-              type: string
-              description: アバターのURL
-              maxLength: *max_len_url
-              format: url
-              example: "https://github.com/ryutah.png"
-            name:
-              type: string
-              description: 作家名
-              maxLength: *max_len_short_string
-              example: ryutah
-            introduction:
-              type: string
-              description: 作家紹介
-              maxLength: *max_len_long_string
-              example: |
-                僕はすごい作家なので、ぶっちゃけこんなサイト使わなくてもどうとでもなるのです😊
-                試しに使ってみようかなって程度なのです。
-          required:
-            - name
-            - introduction
+          $ref: "#/components/schemas/ArtistProfile"
         masterpiece:
-          type: object
-          description: 代表作
-          properties:
-            title:
-              type: string
-              description: 作品タイトル
-              maxLength: *max_len_short_string
-              example: ほげほげふがふが
-            url:
-              type: string
-              description: |
-                作品の画像URL
-                解像度: 150x150(適当)
-              maxLength: *max_len_url
-              example: "https://placehold.jp/150x150.png"
-          required:
-            - title
-            - url
+          $ref: "#/components/schemas/ArtistMasterpiece"
         links:
+          nullable: false
           type: array
           items:
-            type: object
-            description: リンク情報
-            properties:
-              url:
-                type: string
-                description: URL
-                maxLength: *max_len_url
-                format: url
-                example: "https://github.com/ryutah"
-              display_name:
-                type: string
-                description: 表示名
-                maxLength: *max_len_short_string
-                example: "@ryutah"
-              icon:
-                type: string
-                description: サービスアイコンのURL
-                maxLength: *max_len_long_string
-                format: url
-                example: "https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png"
-            required:
-              - url
-              - display_name
-              - links
+            $ref: "#/components/schemas/ArtistLink"
       required:
         - id
         - profile
         - masterpiece
+
+    ArtistProfile:
+      type: object
+      description: 作家情報
+      properties:
+        avator:
+          type: string
+          description: アバターのURL
+          maxLength: *max_len_url
+          format: url
+          example: "https://github.com/ryutah.png"
+        name:
+          type: string
+          description: 作家名
+          maxLength: *max_len_short_string
+          example: ryutah
+        introduction:
+          type: string
+          description: 作家紹介
+          maxLength: *max_len_long_string
+          example: |
+            僕はすごい作家なので、ぶっちゃけこんなサイト使わなくてもどうとでもなるのです😊
+            試しに使ってみようかなって程度なのです。
+      required:
+        - name
+        - introduction
+
+    ArtistMasterpiece:
+      type: object
+      description: 代表作
+      properties:
+        title:
+          type: string
+          description: 作品タイトル
+          maxLength: *max_len_short_string
+          example: ほげほげふがふが
+        url:
+          type: string
+          description: |
+            作品の画像URL
+            解像度: 150x150(適当)
+          maxLength: *max_len_url
+          example: "https://placehold.jp/150x150.png"
+      required:
+        - title
+        - url
+
+    ArtistLink:
+      type: object
+      description: リンク情報
+      properties:
+        url:
+          type: string
+          description: URL
+          maxLength: *max_len_url
+          format: url
+          example: "https://github.com/ryutah"
+        display_name:
+          type: string
+          description: 表示名
+          maxLength: *max_len_short_string
+          example: "@ryutah"
+        icon:
+          type: string
+          description: サービスアイコンのURL
+          maxLength: *max_len_long_string
+          format: url
+          example: "https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png"
+      required:
+        - url
+        - display_name
 
     ArtOfWork:
       type: object
@@ -246,43 +255,49 @@ components:
           description: 作品ID
           example: "xxxxxxxxxxxx"
         information:
-          type: object
-          description: 作品詳細情報
-          properties:
-            title:
-              type: string
-              description: 作品タイトル
-              maxLength: *max_len_short_string
-              example: 現場猫
-            introduction:
-              type: string
-              description: 作品の紹介文
-              maxLength: *max_len_long_string
-              example: |
-                現場猫とは、様々な現場ではたらく猫たちである。便宜上、そのもとになった「電話猫」、そして現場猫をもとにして作られた「仕事猫」についてもここで述べる。
-                現場猫の元となった画像は、くまみね氏が2016年2015年(2020/08/13訂正)にツイートした「ネコ電話相談室」が初出。猫が受話器を取り、「どうして夜中に起きてるんですか？」と言っている画像である。
-          required:
-            - title
-            - introduction
+          $ref: "#/components/schemas/ArtOfWorkInformation"
         display_items:
-          type: object
-          description: 作品
-          properties:
-            url:
-              type: string
-              description: 作品のURL
-              format: url
-              example: "https://user-images.githubusercontent.com/6662577/93331845-e2435f80-f85b-11ea-9a1e-3c3d591e4504.png"
-              maxLength: *max_len_url
-            mime_type:
-              type: string
-              description: 作品の形式
-              enum:
-                - image/png
-                - video/mp4
+          $ref: "#/components/schemas/ArtOfWOrkDisplayItem"
       required:
         - information
         - display_items
+
+    ArtOfWorkInformation:
+      type: object
+      description: 作品詳細情報
+      properties:
+        title:
+          type: string
+          description: 作品タイトル
+          maxLength: *max_len_short_string
+          example: 現場猫
+        introduction:
+          type: string
+          description: 作品の紹介文
+          maxLength: *max_len_long_string
+          example: |
+            現場猫とは、様々な現場ではたらく猫たちである。便宜上、そのもとになった「電話猫」、そして現場猫をもとにして作られた「仕事猫」についてもここで述べる。
+            現場猫の元となった画像は、くまみね氏が2016年2015年(2020/08/13訂正)にツイートした「ネコ電話相談室」が初出。猫が受話器を取り、「どうして夜中に起きてるんですか？」と言っている画像である。
+      required:
+        - title
+        - introduction
+
+    ArtOfWOrkDisplayItem:
+      type: object
+      description: 作品
+      properties:
+        url:
+          type: string
+          description: 作品のURL
+          format: url
+          example: "https://user-images.githubusercontent.com/6662577/93331845-e2435f80-f85b-11ea-9a1e-3c3d591e4504.png"
+          maxLength: *max_len_url
+        mime_type:
+          type: string
+          description: 作品の形式
+          enum:
+            - image/png
+            - video/mp4
 
     # エラーメッセージの参考:
     # https://developers.google.com/search-ads/v2/standard-error-responses
