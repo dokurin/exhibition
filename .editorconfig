@@ -19,6 +19,7 @@ tab_width = 4
 [**.go]
 ## インデントをタブにする
 indent_style = tab
+indent_size = 4
 
 [*.md]
 ## 末尾の空白をトリムしない
