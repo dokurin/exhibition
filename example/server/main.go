@@ -4,6 +4,8 @@ package main
 
 import (
 	"context"
+	"errors"
+	"fmt"
 	"log"
 	"net/http"
 	"os"
@@ -16,21 +18,6 @@ import (
 )
 
 func main() {
-	var srv http.Server
-
-	// Graceful shutdown
-	waitShutdown := make(chan struct{})
-	go func() {
-		sig := make(chan os.Signal, 1)
-		signal.Notify(sig, os.Interrupt)
-		<-sig
-		log.Println("shutdown server...")
-		if err := srv.Shutdown(context.Background()); err != nil {
-			log.Printf("failed to shutdown server: %v", err)
-		}
-		waitShutdown <- struct{}{}
-	}()
-
 	// routing settings
 	router := chi.NewRouter()
 	router.Use(middleware.StripSlashes)
@@ -38,13 +25,33 @@ func main() {
 		oapi.HandlerFromMux(new(handler), r)
 	})
 
-	srv.Handler = router
-	srv.Addr = ":8080"
-	log.Println("start server in http://localhost:8080")
-	if err := srv.ListenAndServe(); err != http.ErrServerClosed {
-		log.Fatalf("failed to listen serve: %v", err)
+	if err := listhenAndServe(8080, router); err != nil {
+		log.Fatalf("failed to serve: %v", err)
 	}
-	<-waitShutdown
+}
+
+// listhenAndServe starts http server with graceful shutdown
+func listhenAndServe(port int, h http.Handler) error {
+	log.Printf("start server on http://localhost:%d", port)
+
+	srv := http.Server{
+		Addr:    fmt.Sprintf(":%d", port),
+		Handler: h,
+	}
+
+	errChan := make(chan error)
+	go func() {
+		sig := make(chan os.Signal, 1)
+		signal.Notify(sig, os.Interrupt)
+		<-sig
+		log.Println("shutdown...")
+		errChan <- srv.Shutdown(context.Background())
+	}()
+
+	if err := srv.ListenAndServe(); !errors.Is(err, http.ErrServerClosed) {
+		return err
+	}
+	return <-errChan
 }
 
 type handler struct{}
