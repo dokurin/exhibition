@@ -64,6 +64,12 @@ COPY package.json /usr/local/
 COPY package-lock.json /usr/local/
 RUN /usr/local/bin/npm ci -g
 
+COPY go.mod /usr/local/gopkg/
+COPY go.sum /usr/local/gopkg/
+COPY tools/tools.go /usr/local/gopkg/
+WORKDIR /usr/local/gopkg
+RUN cat tools.go | awk -F"\"" '/_/ {print $2}' | xargs -tI {} /usr/local/go/bin/go install {}
+
 # Setup prompt
 ADD https://raw.githubusercontent.com/git/git/master/contrib/completion/git-prompt.sh /root/.git-prompt.sh
 COPY ./build/develop/bashrc /root/.bashrc

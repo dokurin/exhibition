@@ -19,6 +19,7 @@ tab_width = 4
 [**.go]
 ## インデントをタブにする
 indent_style = tab
+indent_size = 4
 
 [*.md]
 ## 末尾の空白をトリムしない
@@ -30,3 +31,7 @@ end_of_line = none
 
 [Dockerfile]
 indent_size = 1
+
+[go.mod]
+indent_style = tab
+indent_size = 4
