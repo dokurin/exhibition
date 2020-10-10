@@ -9,6 +9,7 @@
 - [開発ルール](docs/develop_rule.md)
 - [API定義](api/openapi.yaml)
 - [画面遷移図](docs/uiflow)
+- [モブプログラミングルール](docs/mob-programing)
 
 ## コーディングスタイル
 
