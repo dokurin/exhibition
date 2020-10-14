@@ -6,7 +6,13 @@
     <title></title>
   </head>
   <body>
-    <div id="app">{{ message }}</div>
+    <div id="app">
+      {{ message }}
+
+      <ol>
+        <li v-for="todo in todos">{{ todo.text }}</li>
+      </ol>
+    </div>
     <script src="./index.js"></script>
   </body>
 </html>
