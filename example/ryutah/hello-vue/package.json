@@ -1,0 +1,15 @@
+{
+  "name": "hello-vue",
+  "scripts": {
+    "serve": "parcel ./index.html"
+  },
+  "dependencies": {
+    "vue": "^2.6.12"
+  },
+  "devDependencies": {
+    "parcel-bundler": "^1.12.4"
+  },
+  "alias": {
+    "vue": "./node_modules/vue/dist/vue.js"
+  }
+}
