@@ -1,9 +1,5 @@
 import Vue from "vue";
-
-Vue.component("todo-item", {
-  props: ["todo"],
-  template: "<li>{{ todo }}</li>",
-});
+import { TodoItem } from "./todo_item";
 
 const app = new Vue({
   el: "#app",
@@ -19,6 +15,9 @@ const app = new Vue({
     reverseMessage() {
       this.message = this.message.split("").reverse().join("");
     },
+  },
+  components: {
+    "todo-item": TodoItem(),
   },
 });
 
