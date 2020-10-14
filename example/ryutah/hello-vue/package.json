@@ -1,0 +1,18 @@
+{
+  "name": "hello-vue",
+  "scripts": {
+    "serve": "parcel ./index.html"
+  },
+  "dependencies": {
+    "vue": "^2.6.12",
+    "vue-hot-reload-api": "^2.3.4"
+  },
+  "devDependencies": {
+    "@vue/component-compiler-utils": "^3.2.0",
+    "parcel-bundler": "^1.12.4",
+    "vue-template-compiler": "^2.6.12"
+  },
+  "alias": {
+    "vue": "./node_modules/vue/dist/vue.js"
+  }
+}
