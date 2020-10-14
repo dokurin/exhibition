@@ -1,4 +1,4 @@
-export const TodoItem = () => ({
+export default {
   props: ["todo"],
   template: "<li>{{ todo }}</li>",
-});
+};

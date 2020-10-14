@@ -1,10 +1,13 @@
 import Vue from "vue";
-import { TodoItem } from "./todo_item";
+import TodoItem from "./todo_item";
+import Hello from "./Hello";
 
 const app = new Vue({
   el: "#app",
   data: {
     message: "Hello, Vue!",
+    greeting: "Hello!",
+    name: "Anonymas",
     groceryList: [
       { id: 0, text: "Vegetables" },
       { id: 1, text: "Cheese" },
@@ -13,12 +16,19 @@ const app = new Vue({
   },
   methods: {
     reverseMessage() {
-      this.message = this.message.split("").reverse().join("");
+      this.message = this.message
+        .split("")
+        .reverse()
+        .join("");
+    },
+  },
+  computed: {
+    sayHello() {
+      return `${this.greeting} ${this.name}!!`;
     },
   },
   components: {
-    "todo-item": TodoItem(),
+    TodoItem,
+    Hello,
   },
 });
-
-app.message = "I have changed the data";

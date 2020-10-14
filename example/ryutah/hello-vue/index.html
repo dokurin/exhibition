@@ -7,22 +7,40 @@
   </head>
   <body>
     <div id="app">
-      {{ message }}
-
       <div>
-        <button v-on:click="reverseMessage">Reverse Messag</button>
+        <h2>Message And Reverse</h2>
+        <p>
+          {{ message }}
+        </p>
+        <button v-on:click="reverseMessage">Reverse Message</button>
       </div>
 
-      <p>{{ message }}</p>
-      <input v-model="message" />
+      <div>
+        <h2>Input and computed value</h2>
+        <div>
+          <label>Greeting</label>
+          <input v-model="greeting" />
+        </div>
+        <div>
+          <label>Name</label>
+          <input v-model="name" />
+        </div>
 
-      <ol>
-        <todo-item
-          v-for="item in groceryList"
-          v-bind:todo="item.text"
-          v-bind:key="item.id"
-        ></todo-item>
-      </ol>
+        <p>{{ sayHello }}</p>
+      </div>
+
+      <div>
+        <h2>Component</h2>
+        <ol>
+          <todo-item
+            v-for="item in groceryList"
+            :todo="item.text"
+            :key="item.id"
+          ></todo-item>
+        </ol>
+
+        <Hello></Hello>
+      </div>
     </div>
     <script src="./index.js"></script>
   </body>
