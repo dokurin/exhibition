@@ -12,6 +12,11 @@
       <ol>
         <li v-for="todo in todos">{{ todo.text }}</li>
       </ol>
+
+      <button v-on:click="reverseMessage">Reverse Messag</button>
+
+      <p>{{ message }}</p>
+      <input v-model="message" />
     </div>
     <script src="./index.js"></script>
   </body>
