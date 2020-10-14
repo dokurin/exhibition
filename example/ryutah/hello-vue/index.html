@@ -9,14 +9,20 @@
     <div id="app">
       {{ message }}
 
-      <ol>
-        <li v-for="todo in todos">{{ todo.text }}</li>
-      </ol>
-
-      <button v-on:click="reverseMessage">Reverse Messag</button>
+      <div>
+        <button v-on:click="reverseMessage">Reverse Messag</button>
+      </div>
 
       <p>{{ message }}</p>
       <input v-model="message" />
+
+      <ol>
+        <todo-item
+          v-for="item in groceryList"
+          v-bind:todo="item.text"
+          v-bind:key="item.id"
+        ></todo-item>
+      </ol>
     </div>
     <script src="./index.js"></script>
   </body>
