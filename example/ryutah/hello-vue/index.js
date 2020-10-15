@@ -17,10 +17,10 @@ const store = new Vuex.Store({
 });
 
 store.commit("increment");
-console.log(store.state.count);
 
 const app = new Vue({
   el: "#app",
+  store,
   data: {
     message: "Hello, Vue!",
     greeting: "Hello!",
@@ -42,6 +42,9 @@ const app = new Vue({
   computed: {
     sayHello() {
       return `${this.greeting} ${this.name}!!`;
+    },
+    count() {
+      return this.$store.state.count;
     },
   },
   components: {
