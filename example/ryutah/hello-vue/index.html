@@ -8,6 +8,41 @@
   <body>
     <div id="app">
       <div>
+        <h2>State</h2>
+        {{ count }}
+        <div>
+          <button @click="increment">+</button>
+          <button @click="decrement">-</button>
+        </div>
+      </div>
+      <div>
+        <h2>State Todo</h2>
+        <div>
+          {{ doneTodos }}
+        </div>
+        <div>
+          {{ doneTodoCount }}
+        </div>
+        <div>
+          {{ getTodoById(2) }}
+        </div>
+      </div>
+      <div>
+        <h2>State Module</h2>
+        <div>
+          <form @submit.prevent="valueChange">
+            <input type="text" v-model="modA.value" />
+            <input type="submit" />
+          </form>
+        </div>
+        <div>
+          {{ moduleAValue }}
+        </div>
+        <div>
+          {{ reverseValue }}
+        </div>
+      </div>
+      <div>
         <h2>Message And Reverse</h2>
         <p>
           {{ message }}
